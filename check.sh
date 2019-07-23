@@ -22,10 +22,10 @@ BUSTER_TAG=2-buster
 loginfo "building images:"
 
 loginfo "${STRETCH_IMAGE} based on python:${STRETCH_TAG} image..."
-docker build --build-arg python_tag=${STRETCH_TAG} -t ${STRETCH_IMAGE} .
+docker build --pull --build-arg python_tag=${STRETCH_TAG} -t ${STRETCH_IMAGE} .
 
 loginfo "${BUSTER_IMAGE} based on python:${BUSTER_TAG} image..."
-docker build --build-arg python_tag=${BUSTER_TAG} -t ${BUSTER_IMAGE} .
+docker build --pull --build-arg python_tag=${BUSTER_TAG} -t ${BUSTER_IMAGE} .
 
 # Add required connection options
 SECURE_DSN="${DSN}?sslmode=verify-full&sslrootcert=rds-combined-ca-bundle.pem"
