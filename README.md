@@ -24,9 +24,11 @@ where that dsn connection string points to your AWS RDS database.
 The script is fairly simple.
 It creates two images based on `python:2-stretch` and `python:2-buster` images.
 Both of them have `psycopg2` (Python driver for PG) and `psql` (CLI for PG) installed.
-After setting the images, the script runs two commands from each image.
+After building the images, the script runs two commands from each image.
 First one tries to connect to the given database from Python via the `psycopg2` library
-and the second one tries to run a simple `select 1` statement via `psql` client.
+and the second one tries to run a query
+that provides some info about the current connection
+via `psql` client.
 
 The connection string provided to the script is adjusted with two options:
 * `sslmode` (which is set to `verify-full`) and
@@ -59,9 +61,9 @@ Traceback (most recent call last):
 psycopg2.OperationalError: SSL error: certificate verify failed
 
 checking psql on stretch...
- ?column?
-----------
-        1
+ pid  | ssl | version |           cipher            | bits | compression | clientdn
+------+-----+---------+-----------------------------+------+-------------+----------
+ 9411 | t   | TLSv1.2 | ECDHE-RSA-AES256-GCM-SHA384 |  256 | f           |
 (1 row)
 
 checking psql on buster...

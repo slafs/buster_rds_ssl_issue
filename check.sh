@@ -44,7 +44,7 @@ docker run -it --rm -e SECURE_DSN --entrypoint python ${BUSTER_IMAGE} \
 
 
 # Check psql
-PSQL_COMMAND="psql -c 'select 1' \${SECURE_DSN}"
+PSQL_COMMAND="psql -c 'select * from pg_stat_ssl where pid in (select pg_backend_pid())' \${SECURE_DSN}"
 
 loginfo "checking psql on stretch..."
 docker run -it --rm -e SECURE_DSN --entrypoint bash ${STRETCH_IMAGE} \
