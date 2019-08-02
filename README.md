@@ -19,6 +19,11 @@ bash ./check.sh postgres://user:pass@my-aws-rds-host:port/dbname
 
 where that dsn connection string points to your AWS RDS database.
 
+You can optionally provide a second argument
+which will be used as `sslmode` option, i.e. either
+`verify-full`, `verify-ca`, `require`, `prefer`, `allow` or `disable`.
+The default is: `verify-full`.
+
 ## How does the script work?
 
 The script is fairly simple.
@@ -31,9 +36,10 @@ that provides some info about the current connection
 via `psql` client.
 
 The connection string provided to the script is adjusted with two options:
-* `sslmode` (which is set to `verify-full`) and
+* `sslmode` (which is set to `verify-full` by default, but can be changed
+  via second argument to the script) and
 * `sslrootcert` (set to `rds-combined-ca-bundle.pem` -
-downloaded from https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem).
+  downloaded from https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem).
 
 to provide a safe connection to the database.
 
@@ -51,22 +57,22 @@ ssl_issue_python_2_buster based on python:2-buster image...
 ...
 Successfully built 6bf2635c3dee
 Successfully tagged ssl_issue_python_2_buster:latest
-checking psycopg2 connection on stretch...
+checking psycopg2 connection on stretch (sslmode=verify-full)...
 <connection object at 0x7fcf21dc6a50; dsn: 'sslrootcert=rds-combined-ca-bundle.pem host=**** user=postgres sslmode=verify-full password=xxx dbname=****', closed: 0>
-checking psycopg2 connection on buster...
+checking psycopg2 connection on buster (sslmode=verify-full)...
 Traceback (most recent call last):
   File "<string>", line 1, in <module>
   File "/usr/local/lib/python2.7/site-packages/psycopg2/__init__.py", line 126, in connect
     conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
 psycopg2.OperationalError: SSL error: certificate verify failed
 
-checking psql on stretch...
+checking psql on stretch (sslmode=verify-full)...
  pid  | ssl | version |           cipher            | bits | compression | clientdn
 ------+-----+---------+-----------------------------+------+-------------+----------
  9411 | t   | TLSv1.2 | ECDHE-RSA-AES256-GCM-SHA384 |  256 | f           |
 (1 row)
 
-checking psql on buster...
+checking psql on buster (sslmode=verify-full)...
 psql: SSL error: certificate verify failed
 
 FIN. Now you may want to clean up the images, with:
