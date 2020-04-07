@@ -1,5 +1,8 @@
 # Issue with secure connection to RDS from python:2-buster image
 
+Note: the README talks about Python 2,
+but the `check.sh` now uses Python 3.5 images.
+
 This repo is showing an issue that appeared
 after upgrading official `python:2` Docker image
 to use a newer Debian (codename `buster`) base image.

@@ -25,11 +25,11 @@ function loginfo {
 }
 
 
-STRETCH_IMAGE=ssl_issue_python_2_stretch
-BUSTER_IMAGE=ssl_issue_python_2_buster
+STRETCH_IMAGE=ssl_issue_python_35_stretch
+BUSTER_IMAGE=ssl_issue_python_35_buster
 
-STRETCH_TAG=2-stretch
-BUSTER_TAG=2-buster
+STRETCH_TAG="3.5-stretch"
+BUSTER_TAG="3.5-buster"
 
 loginfo "building images:"
 
@@ -44,7 +44,7 @@ SECURE_DSN="${DSN}?sslmode=${SSLMODE}&sslrootcert=rds-combined-ca-bundle.pem"
 export SECURE_DSN
 
 # Check psycopg2
-PYTHON_COMMAND="import os, psycopg2;print psycopg2.connect(os.getenv('SECURE_DSN'))"
+PYTHON_COMMAND="import os, psycopg2;print(psycopg2.connect(os.getenv('SECURE_DSN')))"
 
 loginfo "checking psycopg2 connection on stretch (sslmode=${SSLMODE})..."
 docker run -it --rm -e SECURE_DSN --entrypoint python ${STRETCH_IMAGE} \
